@@ -71,7 +71,7 @@ jib{
         image='openjdk:17-jdk-alpine'
     }
     to {
-        image='fastforward/domino-stock-api'
+        image='jonghwalee/domino-stock-api'
         tags=['latest']
     }
 }

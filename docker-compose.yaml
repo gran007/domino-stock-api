@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+  domino-stock-api:
+    image: jonghwalee/domino-stock-api
+    container_name: domino-stock-api
+    ports:
+      - 8080:8080
+    environment:
+      MONGO_DB_HOSTNAME: mongodb
+    depends_on:
+      - mongodb

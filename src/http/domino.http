@@ -1,1 +1,1 @@
-GET localhost/domino/samsung/{{interval}}/{{totalDays}}
+GET localhost:8080/domino/samsung/{{interval}}/{{totalDays}}
