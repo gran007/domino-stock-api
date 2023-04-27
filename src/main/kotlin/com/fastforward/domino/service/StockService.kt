@@ -17,12 +17,7 @@ class StockService(
 
     fun parseAndSaveStockData(stockCode: String, interval: Int, totalDays: Int): List<StockDataDto> {
         val jsonData: StockRawDataDto? = webclient.get()
-            .uri { uriBuilder -> uriBuilder
-                .path("/${stockCode}")
-                .queryParam("interval", "${interval}d")
-                .queryParam("range", "${totalDays}d")
-                .build()
-            }
+            .uri("/${stockCode}?interval=${interval}d&range=${totalDays}d")
             .accept(MediaType.APPLICATION_JSON)
             .retrieve()
             .bodyToMono(StockRawDataDto::class.java)

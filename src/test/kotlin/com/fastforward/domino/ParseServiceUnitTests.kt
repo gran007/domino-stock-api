@@ -11,7 +11,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Test
 
-class ParseServiceTests {
+class ParseServiceUnitTests {
 
     private val parseService = ParseService()
 
@@ -22,13 +22,13 @@ class ParseServiceTests {
     private var resultData: List<StockDataDto>
 
     init {
-        val resultJson = "[{\"timeStamp\":1,\"low\":1.0,\"high\":1.0,\"open\":1.0,\"close\":1.0,\"volume\":1}]"
+        val resultJson = "[{\"timestamp\":1,\"low\":1.0,\"high\":1.0,\"open\":1.0,\"close\":1.0,\"volume\":1}]"
         resultData = mapper.readValue(resultJson, object : TypeReference<List<StockDataDto>>() {})
     }
 
     @Test
     fun `after parse same multiple data should be matched`() {
-        val multipleResultJson = "[{\"timeStamp\":1,\"low\":1.0,\"high\":1.0,\"open\":1.0,\"close\":1.0,\"volume\":1},{\"timeStamp\":2,\"low\":2.0,\"high\":2.0,\"open\":2.0,\"close\":2.0,\"volume\":2}]"
+        val multipleResultJson = "[{\"timestamp\":1,\"low\":1.0,\"high\":1.0,\"open\":1.0,\"close\":1.0,\"volume\":1},{\"timestamp\":2,\"low\":2.0,\"high\":2.0,\"open\":2.0,\"close\":2.0,\"volume\":2}]"
         val multipleResultData = mapper.readValue(multipleResultJson, object : TypeReference<List<StockDataDto>>() {})
 
         val compareJson = "{\"chart\":{\"result\":[{\"timestamp\":[1,2],\"indicators\":{\"quote\":[{\"close\":[1.0,2.0],\"low\":[1.0,2.0],\"open\":[1.0,2.0],\"high\":[1.0,2.0],\"volume\":[1,2]}]}}]}}"
