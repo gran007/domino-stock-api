@@ -1,7 +1,7 @@
 package com.fastforward.domino.controller
 
 import com.fastforward.domino.dto.StockDataDto
-import com.fastforward.domino.service.DominoService
+import com.fastforward.domino.service.StockService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.Parameters
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "domino stock info api")
 @RestController
 @RequestMapping("/domino")
-class DominoController(val dominoService: DominoService) {
+class StockController(val stockService: StockService) {
 
     @Operation(summary = "samsung stock info")
     @Parameters(
@@ -29,7 +29,7 @@ class DominoController(val dominoService: DominoService) {
     fun getSamsungStockInfo(
             @PathVariable("interval") interval: Int,
             @PathVariable("totalDays") totalDays: Int): ResponseEntity<List<StockDataDto>> {
-                val data = dominoService.getStockData("005930.KS", interval, totalDays)
+                val data = stockService.parseAndSaveStockData("005930.KS", interval, totalDays)
         return ResponseEntity(data, HttpStatus.OK)
     }
 }

@@ -2,20 +2,21 @@ package com.fastforward.domino.service
 
 import com.fastforward.domino.dto.StockDataDto
 import com.fastforward.domino.dto.StockRawDataDto
-import com.fastforward.domino.repository.DominoRepository
+import com.fastforward.domino.entity.StockEntity
+import com.fastforward.domino.repository.StockRepository
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 
 
 @Service
-class DominoService(
+class StockService(
     val parseService: ParseService,
-    val dominoRepository: DominoRepository,
+    val stockRepository: StockRepository,
     val webclient: WebClient) {
 
-    fun getStockData(stockCode: String, interval: Int, totalDays: Int): List<StockDataDto> {
-        val data: StockRawDataDto? = webclient.get()
+    fun parseAndSaveStockData(stockCode: String, interval: Int, totalDays: Int): List<StockDataDto> {
+        val jsonData: StockRawDataDto? = webclient.get()
             .uri { uriBuilder -> uriBuilder
                 .path("/${stockCode}")
                 .queryParam("interval", "${interval}d")
@@ -26,7 +27,12 @@ class DominoService(
             .retrieve()
             .bodyToMono(StockRawDataDto::class.java)
             .block()
-        return parseService.parseStockData(data)
+        val stockDataDtoList: List<StockDataDto> = parseService.parseStockData(jsonData)
+        val stockEntityList = stockDataDtoList.map {
+            StockEntity(stockCode, it)
+        }.toList()
+        stockRepository.saveAll(stockEntityList)
+        return stockDataDtoList
     }
 
 

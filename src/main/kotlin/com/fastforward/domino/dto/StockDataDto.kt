@@ -1,14 +1,14 @@
 package com.fastforward.domino.dto
 
 data class StockDataDto(
-    val timeStamp: Long,
+    val timestamp: Long,
     val low: Double,
     val high: Double,
     val open: Double,
     val close: Double,
     val volume: Double) {
-    constructor(timeStamp: Long, quote: StockQuote, index: Int) :
-            this(timeStamp,
+    constructor(timestamp: Long, quote: StockQuote, index: Int) :
+            this(timestamp,
                 quote.low[index],
                 quote.high[index],
                 quote.open[index],
